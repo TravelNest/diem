@@ -1,0 +1,34 @@
+{
+  "name": "@travelnest/diem",
+  "version": "0.1.0",
+  "description": "Seize the Date",
+  "main": "/build",
+  "scripts": {
+    "test": "./node_modules/.bin/jest --coverage",
+    "build": "./node_modules/.bin/tsc",
+    "lint": "./node_modules/.bin/tslint --project ./tsconfig.json"
+  },
+  "files": [
+    "package.json",
+    "build"
+  ],
+  "keywords": [
+    "es6"
+  ],
+  "author": "Eddie Reade <eddie@travelnest.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jest": "^24.9.0",
+    "@types/node": "^13.1.8",
+    "jest": "^24.9.0",
+    "ts-jest": "^24.3.0",
+    "tslint": "^5.20.1",
+    "typescript": "^3.7.5"
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "<rootDir>/node_modules/",
+      "<rootDir>/build/"
+    ]
+  }
+}
