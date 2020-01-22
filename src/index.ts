@@ -16,7 +16,9 @@ class Diem {
 		} else {
 			date = new Date();
 		}
+		// set time to 00:00 local as all Date methods return local
 		date.setHours(0, 0, 0, 0);
+		date.setTime(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
 		this.date = date;
 	}
 
