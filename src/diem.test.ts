@@ -116,7 +116,7 @@ describe('Diem', tzRepeat(() => {
 			${'2020-01-01'} | ${'2019-01-01'} | ${365}
 			${'2021-01-01'} | ${'2020-01-01'} | ${366}
 			${'2020-03-30'} | ${'2020-03-27'} | ${3}
-		`('should return $days for difference of $d1 $d2', tzRepeat(({ d1, d2, days }) => {
+		`('should return $days for difference of $d1 $d2', ({ d1, d2, days }) => {
 			const diem1 = new Diem(d1);
 			const diem2 = new Diem(d2);
 			expect(diem1.diff(diem2)).toEqual(days);
@@ -125,6 +125,6 @@ describe('Diem', tzRepeat(() => {
 				new Diem(new Date(d.toDate().setHours(h, m, s, ms)));
 
 			expect(rebuildWithTime(diem1, 0, 0, 0, 1).diff(rebuildWithTime(diem2, 23, 59, 59, 999))).toEqual(days);
-		}));
+		});
 	});
 }));
