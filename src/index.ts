@@ -1,61 +1,62 @@
 import { inspect } from 'util';
 
+const zeroPad = (n: number) => n < 10 ? '0' + n : n.toString();
+const coerceUTC = (d: Date) => new Date(d.toISOString().substr(0, 10) + 'T00:00:00Z');
+
 class Diem {
-	private readonly date: Date;
+	private readonly midnightUTC: Date;
 
 	constructor(value?: number | string | Date);
 	constructor(year: number, month: number, date?: number);
 	constructor(p1?: string | number | Date, p2?: number, p3?: number) {
 		let date: Date;
 		if (p1 instanceof Date) {
-			date = p1;
+			date = coerceUTC(new Date(p1.getTime()));
 		} else if (typeof p1 === 'string') {
-			date = new Date(p1);
+			date = new Date(p1.substr(0, 10) + 'T00:00:00Z');
 		} else if (typeof p1 === 'number' && p2 !== undefined) {
-			date = new Date(p1, p2, p3);
+			date = new Date(`${p1}-${zeroPad(p2 + 1)}-${zeroPad(p3 || 1)}T00:00:00Z`);
 		} else {
-			date = new Date();
+			date = coerceUTC(new Date());
 		}
-		// set time to 00:00 local as all Date methods return local
-		date.setHours(0, 0, 0, new Date().getTimezoneOffset() * 60 * 1000);
-		this.date = date;
+		this.midnightUTC = date;
 	}
 
-	public getDate = () => this.date.getDate();
-	public getDay = () => this.date.getDay();
-	public getMonth = () => this.date.getMonth();
-	public getFullYear = () => this.date.getFullYear();
+	public getDate = () => this.midnightUTC.getUTCDate();
+	public getDay = () => this.midnightUTC.getUTCDay();
+	public getMonth = () => this.midnightUTC.getUTCMonth();
+	public getFullYear = () => this.midnightUTC.getUTCFullYear();
 
 	public setDate = (date: number) => {
-		this.date.setDate(date);
+		this.midnightUTC.setUTCDate(date);
 		return this;
 	}
 	public setMonth = (month: number, date?: number) => {
-		this.date.setMonth(month);
-		if (date !== undefined) this.date.setDate(date);
+		this.midnightUTC.setUTCMonth(month);
+		if (date !== undefined) this.setDate(date);
 		return this;
 	}
 	public setFullYear = (year: number, month?: number, date?: number) => {
-		this.date.setFullYear(year);
-		if (month !== undefined) this.date.setMonth(month);
-		if (date !== undefined) this.date.setDate(date);
+		this.midnightUTC.setUTCFullYear(year);
+		if (month !== undefined) this.setMonth(month);
+		if (date !== undefined) this.setDate(date);
 		return this;
 	}
 
 	public diff = (that: Diem | Date) => {
 		const MS_IN_DAY = 1000 * 60 * 60 * 24;
 
-		const d1 = this.date;
-		const d2 = that instanceof Diem ? that.date : that;
+		const d1 = this.midnightUTC;
+		const d2 = that instanceof Diem ? that.midnightUTC : coerceUTC(that);
 
 		const ms = d1.getTime() - d2.getTime();
 		return Math.round(ms / MS_IN_DAY);
 	}
 
-	public toString = () => this.date.toString().split(' ').slice(0, 4).join(' ');
-	public toISOString = () => this.date.toISOString().split('T')[0];
+	public toString = () => this.midnightUTC.toString().split(' ').slice(0, 4).join(' ');
+	public toISOString = () => this.midnightUTC.toISOString().split('T')[0];
 
-	public toDate = () => new Date(this.date.getTime());
+	public toDate = () => new Date(this.toISOString());
 }
 
 Diem.prototype[inspect.custom] = function() {
