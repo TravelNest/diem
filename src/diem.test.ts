@@ -66,8 +66,13 @@ describe('Diem', tzRepeat(() => {
 			expect(day.getFullYear()).toEqual(2020);
 
 			day.setDate(day.getDate() - 1);
-
 			sameDies(day, new Diem('2019-12-31'));
+
+			day.setMonth(day.getMonth() - 2);
+			sameDies(day, new Diem('2019-10-31'));
+
+			day.setFullYear(day.getFullYear() - 1);
+			sameDies(day, new Diem('2018-10-31'));
 		});
 	});
 

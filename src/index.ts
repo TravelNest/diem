@@ -31,11 +31,14 @@ class Diem {
 		return this;
 	}
 	public setMonth = (month: number, date?: number) => {
-		this.date.setMonth(month, date);
+		this.date.setMonth(month);
+		if (date !== undefined) this.date.setDate(date);
 		return this;
 	}
 	public setFullYear = (year: number, month?: number, date?: number) => {
-		this.date.setFullYear(year, month, date);
+		this.date.setFullYear(year);
+		if (month !== undefined) this.date.setMonth(month);
+		if (date !== undefined) this.date.setDate(date);
 		return this;
 	}
 
