@@ -17,8 +17,7 @@ class Diem {
 			date = new Date();
 		}
 		// set time to 00:00 local as all Date methods return local
-		date.setHours(0, 0, 0, 0);
-		date.setTime(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
+		date.setHours(0, 0, 0, new Date().getTimezoneOffset() * 60 * 1000);
 		this.date = date;
 	}
 
@@ -53,7 +52,7 @@ class Diem {
 	public toString = () => this.date.toString().split(' ').slice(0, 4).join(' ');
 	public toISOString = () => this.date.toISOString().split('T')[0];
 
-	public toDate = () => this.date;
+	public toDate = () => new Date(this.date.getTime());
 }
 
 Diem.prototype[inspect.custom] = function() {

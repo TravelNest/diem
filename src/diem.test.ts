@@ -46,6 +46,18 @@ describe('Diem', tzRepeat(() => {
 			sameDies(d2, d3);
 		});
 
+		it('should not matter whether input has a time component', (() => {
+			const early = new Diem(new Date().setHours(0, 1));
+			const midday = new Diem(new Date().setHours(12));
+			const late = new Diem(new Date().setHours(23, 59));
+
+			const today = new Diem();
+
+			sameDies(early, today);
+			sameDies(midday, today);
+			sameDies(late, today);
+		}));
+
 		it('can be updated', () => {
 			const day = new Diem('2020-01-01');
 
@@ -71,6 +83,25 @@ describe('Diem', tzRepeat(() => {
 		});
 	});
 
+	describe(`test toDate (tz=${CURRENT_TZ})`, () => {
+		it('should convert to Date', () => {
+			const diem = new Diem('2020-03-29');
+			const date = new Date(2020, 2, 29, 0, 0, 0, 0);
+
+			expect(diem.toDate()).toEqual(date);
+		});
+
+		it('should return a new Date instance', () => {
+			const diem = new Diem('2020-03-29');
+
+			const result = diem.toDate();
+
+			result.setDate(20);
+			expect(result.getDate()).toEqual(20);
+			expect(diem.getDate()).toEqual(29);
+		});
+	});
+
 	describe(`test diff method (tz=${CURRENT_TZ})`, () => {
 		it.each`
 			d1              | d2              | days
@@ -79,8 +110,16 @@ describe('Diem', tzRepeat(() => {
 			${'2020-01-01'} | ${'2020-01-02'} | ${-1}
 			${'2020-01-01'} | ${'2019-01-01'} | ${365}
 			${'2021-01-01'} | ${'2020-01-01'} | ${366}
+			${'2020-03-30'} | ${'2020-03-27'} | ${3}
 		`('should return $days for difference of $d1 $d2', tzRepeat(({ d1, d2, days }) => {
-			expect(new Diem(d1).diff(new Diem(d2))).toEqual(days);
+			const diem1 = new Diem(d1);
+			const diem2 = new Diem(d2);
+			expect(diem1.diff(diem2)).toEqual(days);
+
+			const rebuildWithTime = (d: Diem, h: number, m: number, s: number, ms: number) =>
+				new Diem(new Date(d.toDate().setHours(h, m, s, ms)));
+
+			expect(rebuildWithTime(diem1, 0, 0, 0, 1).diff(rebuildWithTime(diem2, 23, 59, 59, 999))).toEqual(days);
 		}));
 	});
 }));
