@@ -9,17 +9,18 @@ class Diem {
 	constructor(value?: number | string | Date);
 	constructor(year: number, month: number, date?: number);
 	constructor(p1?: string | number | Date, p2?: number, p3?: number) {
-		let date: Date;
+		let midnightUTC: Date;
+
 		if (p1 instanceof Date) {
-			date = coerceUTC(new Date(p1.getTime()));
+			midnightUTC = coerceUTC(p1);
 		} else if (typeof p1 === 'string') {
-			date = new Date(p1.substr(0, 10) + 'T00:00:00Z');
+			midnightUTC = new Date(p1.substr(0, 10) + 'T00:00:00Z');
 		} else if (typeof p1 === 'number' && p2 !== undefined) {
-			date = new Date(`${p1}-${zeroPad(p2 + 1)}-${zeroPad(p3 || 1)}T00:00:00Z`);
+			midnightUTC = new Date(`${p1}-${zeroPad(p2 + 1)}-${zeroPad(p3 || 1)}T00:00:00Z`);
 		} else {
-			date = coerceUTC(new Date());
+			midnightUTC = coerceUTC(new Date());
 		}
-		this.midnightUTC = date;
+		this.midnightUTC = midnightUTC;
 	}
 
 	public getDate = () => this.midnightUTC.getUTCDate();
@@ -38,8 +39,7 @@ class Diem {
 	}
 	public setFullYear = (year: number, month?: number, date?: number) => {
 		this.midnightUTC.setUTCFullYear(year);
-		if (month !== undefined) this.setMonth(month);
-		if (date !== undefined) this.setDate(date);
+		if (month !== undefined) this.setMonth(month, date);
 		return this;
 	}
 
