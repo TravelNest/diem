@@ -43,8 +43,8 @@ However `Date` methods are locale aware, so what would be the year where you are
 
 Keeping track of the underlying moment in time is a headache, and often unnecessary.  Consider these statements:
 
-- Alice's birthday is on August 2nd
-- How many days are there between the first Debate and Election Day?
-- The guest will check in on September 1st 2020 and stay for 4 nights
+1) Alice's birthday is on August 2nd
+2) How many days are there between the first Debate and Election Day?
+3) The guest will check in on September 1st 2020 and stay for 4 nights
   
-In each case there is no privileged moment in time. It is no important which range of milliseconds is meant by the date.  
+In each case there is no privileged moment in time. You shouldn't need to know which range of milliseconds is meant by each date.  
