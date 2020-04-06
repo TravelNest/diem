@@ -20,7 +20,7 @@
   "devDependencies": {
     "@types/jest": "^24.9.0",
     "@types/node": "^13.1.8",
-    "jest": "^24.9.0",
+    "jest": "^25.2.7",
     "timezone-mock": "^1.0.11",
     "ts-jest": "^24.3.0",
     "tslint": "^5.20.1",
