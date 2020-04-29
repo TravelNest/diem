@@ -11,7 +11,8 @@ const TZ: TimeZone[] = [
 	'Europe/London',
 	'Brazil/East',
 	'US/Eastern',
-	'US/Pacific'
+	'US/Pacific',
+	'Australia/Adelaide'
 ];
 
 type AnyFn = (...a: any[]) => any;

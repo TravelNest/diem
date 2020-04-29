@@ -6,8 +6,6 @@ const coerceUTC = (d: Date) => {
 	const utcOffset = d.getTimezoneOffset();
 	if (utcOffset < 0) {
 		noTz = new Date(d.getTime() + (d.getTimezoneOffset() * 60 * 1000) * -1);
-	} else if (utcOffset === 0) {
-		noTz = new Date(d.getTime() + (d.getTimezoneOffset() * 60 * 1000));
 	}
 	return new Date((noTz).toISOString().substr(0, 10) + 'T00:00:00Z');
 };
@@ -68,7 +66,7 @@ class Diem {
 	public toDate = () => new Date(this.toISOString());
 }
 
-Diem.prototype[inspect.custom] = function() {
+Diem.prototype[inspect.custom] = function () {
 	return this.toString();
 };
 
