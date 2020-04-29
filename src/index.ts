@@ -1,7 +1,16 @@
 import { inspect } from 'util';
 
 const zeroPad = (n: number) => n < 10 ? '0' + n : n.toString();
-const coerceUTC = (d: Date) => new Date(d.toISOString().substr(0, 10) + 'T00:00:00Z');
+const coerceUTC = (d: Date) => {
+	let noTz = d;
+	const utcOffset = d.getTimezoneOffset();
+	if (utcOffset < 0) {
+		noTz = new Date(d.getTime() + (d.getTimezoneOffset() * 60 * 1000) * -1);
+	} else if (utcOffset === 0) {
+		noTz = new Date(d.getTime() + (d.getTimezoneOffset() * 60 * 1000));
+	}
+	return new Date((noTz).toISOString().substr(0, 10) + 'T00:00:00Z');
+};
 
 class Diem {
 	private readonly midnightUTC: Date;

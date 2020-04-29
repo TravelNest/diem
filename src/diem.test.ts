@@ -30,6 +30,15 @@ inAllTimezonesIt.each = <F extends AnyFn>(params: Array<Parameters<F>>) => (desc
 
 describe('Diem', () => {
 	describe('test construction', () => {
+
+		it('should handle midnight in BST', () => {
+			register('Europe/London');
+			// April 1st at Midnight
+			const inBST = new Date(2020, 3, 1, 0, 0, 0, 0);
+			expect(new Diem(inBST).toISOString()).toEqual('2020-04-01');
+			unregister();
+		});
+
 		inAllTimezonesIt('should default to today', () => {
 			const now = new Date();
 			const today = new Diem();
