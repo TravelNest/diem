@@ -66,7 +66,7 @@ class Diem {
 	public toDate = () => new Date(this.toISOString());
 }
 
-Diem.prototype[inspect.custom] = function () {
+Diem.prototype[inspect.custom] = function() {
 	return this.toString();
 };
 
