@@ -1,12 +1,13 @@
 {
   "name": "@travelnest/diem",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Seize the Date",
-  "main": "/build",
+  "main": "./build/index.js",
+  "types": "./build/index.d.ts",
   "scripts": {
-    "test": "./node_modules/.bin/jest --coverage",
-    "build": "./node_modules/.bin/tsc",
-    "lint": "./node_modules/.bin/tslint --project ./tsconfig.json"
+    "test": "jest --coverage",
+    "build": "tsc",
+    "lint": "tslint --project ./tsconfig.json"
   },
   "files": [
     "package.json",
@@ -21,7 +22,7 @@
     "@types/jest": "^24.9.0",
     "@types/node": "^13.1.8",
     "jest": "^25.2.7",
-    "timezone-mock": "^1.0.11",
+    "timezone-mock": "^1.0.18",
     "ts-jest": "^24.3.0",
     "tslint": "^5.20.1",
     "typescript": "^3.7.5"
