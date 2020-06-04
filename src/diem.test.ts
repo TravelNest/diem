@@ -29,6 +29,10 @@ inAllTimezonesIt.each = <F extends AnyFn>(params: Array<Parameters<F>>) => (desc
 	});
 };
 
+// TODOJ NEXT:
+// * Add tests for constructing from Diem
+// * Add JSDoc for Diff method
+
 describe('Diem', () => {
 	describe('test construction', () => {
 
@@ -44,6 +48,15 @@ describe('Diem', () => {
 			const now = new Date();
 			const today = new Diem();
 			sameDies(now, today);
+		});
+
+		it('should create a new instance from a Diem', () => {
+			const june1st2020 = new Diem(2020, 5, 1);
+			expect(june1st2020.toISOString()).toEqual('2020-06-01');
+			const newOne = new Diem(june1st2020);
+
+			expect(newOne.toISOString()).toEqual('2020-06-01');
+			expect(newOne.toISOString()).not.toBe(june1st2020);
 		});
 
 		inAllTimezonesIt('should parse iso date strings', () => {

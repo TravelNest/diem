@@ -1,8 +1,9 @@
 import { inspect } from 'util';
 
 const zeroPad = (n: number) => n < 10 ? '0' + n : n.toString();
+
 const coerceUTC = (d: Date) => {
-	let noTz = d;
+	let noTz = new Date(d.getTime());
 	const utcOffset = d.getTimezoneOffset();
 	if (utcOffset < 0) {
 		noTz = new Date(d.getTime() + (d.getTimezoneOffset() * 60 * 1000) * -1);
@@ -13,13 +14,15 @@ const coerceUTC = (d: Date) => {
 class Diem {
 	private readonly midnightUTC: Date;
 
-	constructor(value?: number | string | Date);
+	constructor(value?: number | string | Date | Diem);
 	constructor(year: number, month: number, date?: number);
-	constructor(p1?: string | number | Date, p2?: number, p3?: number) {
+	constructor(p1?: string | number | Date | Diem, p2?: number, p3?: number) {
 		let midnightUTC: Date;
 
 		if (p1 instanceof Date) {
 			midnightUTC = coerceUTC(p1);
+		} else if (p1 instanceof Diem) {
+			midnightUTC = coerceUTC(p1.toDate());
 		} else if (typeof p1 === 'string') {
 			midnightUTC = new Date(p1.substr(0, 10) + 'T00:00:00Z');
 		} else if (typeof p1 === 'number' && p2 !== undefined) {
@@ -50,6 +53,21 @@ class Diem {
 		return this;
 	}
 
+	/**
+	 * Compare this Diem to another Diem (or Date).
+	 *
+	 * @param {Diem | Date} that - The date-like to compare to.
+	 *
+	 * @returns {number} diff - The number of days between "this" and "that".
+	 *
+	 * @example
+	 *
+	 * new Diem('2020-06-01').diff(new Diem('2020-06-10'))  // returns -9 (9 days before)
+	 *
+	 * new Diem('2020-06-01').diff(new Diem('2020-05-28'))  // returns 3 (3 days after)
+	 *
+	 * new Diem('2020-06-01').diff(new Diem('2020-06-01'))  // return 0 (same day)
+	 */
 	public diff = (that: Diem | Date) => {
 		const MS_IN_DAY = 1000 * 60 * 60 * 24;
 
