@@ -1,0 +1,13 @@
+# Start of Travis job config
+language: node_js
+node_js:
+  - "12"
+stages:
+  - name: test
+    if: type = pull_request OR (type = push AND branch = master)
+jobs:
+  include:
+    # Test
+    - stage: test
+      install: npm ci
+      script: npm run build && npm run lint && npm t
