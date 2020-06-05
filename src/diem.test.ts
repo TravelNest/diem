@@ -29,10 +29,6 @@ inAllTimezonesIt.each = <F extends AnyFn>(params: Array<Parameters<F>>) => (desc
 	});
 };
 
-// TODOJ NEXT:
-// * Add tests for constructing from Diem
-// * Add JSDoc for Diff method
-
 describe('Diem', () => {
 	describe('test construction', () => {
 
